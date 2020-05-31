@@ -14,24 +14,33 @@ ctx.lineCap = "round";                  //设置连线末端样式
 let flg = false;
 //标记线条开始的位置
 let begin ;
+//获取当前设备是PC端还是移动端
+let isTouchDevice = 'ontouchstart' in document.documentElement;
 
-let isTouch = ctx.ontouchmove;
-console.log(isTouch);
-
-canvas.onmousedown = (e)=> {
-    //当鼠标点击时，开始画线
-    flg = true;
-    begin = [e.clientX, e.clientY];     //记录线条开始画的位置
-}
-canvas.onmousemove = (e)=> {
-    if(flg === true){
-        drawLine(begin[0], begin[1], e.clientX, e.clientY);     //调用画线
+if(isTouchDevice){
+    canvas.ontouchstart = (e)=>{
+        begin = [e.touches[0].clientX, e.touches[0].clientY];
     }
-    //记录鼠标最后的位置
-    begin = [e.clientX, e.clientY];
-}
-canvas.onmouseup = ()=> {
-    flg = false;
+    canvas.ontouchmove = (e)=> {
+        drawLine(begin[0], begin[1], e.touches[0].clientX, e.touches[0].clientY);
+        begin = [e.touches[0].clientX, e.touches[0].clientY];
+    }
+}else{
+    canvas.onmousedown = (e)=> {
+        //当鼠标点击时，开始画线
+        flg = true;
+        begin = [e.clientX, e.clientY];     //记录线条开始画的位置
+    }
+    canvas.onmousemove = (e)=> {
+        if(flg === true){
+            drawLine(begin[0], begin[1], e.clientX, e.clientY);     //调用画线
+        }
+        //记录鼠标最后的位置
+        begin = [e.clientX, e.clientY];
+    }
+    canvas.onmouseup = ()=> {
+        flg = false;
+    }
 }
 
 //画线动作
