@@ -1,11 +1,18 @@
-canvas.onclick = (e)=> {
-    let div = document.createElement('div');
-    div.style.position = 'absolute';
-    div.style.left = e.clientX + 'px';
-    div.style.top = e.clientY + 'px';
-    div.style.width = 6 + 'px'
-    div.style.height = 6 + 'px'
-    div.style.borderRadius = '50%';
-    div.style.background = 'tomato';
-    canvas.appendChild(div);
+//画线
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+
+canvas.width = document.documentElement.clientWidth;
+canvas.height = document.documentElement.clientHeight
+
+ctx.fillStyle = 'tomato';               //填充颜色
+
+var flg = 'true';
+canvas.onclick = ()=> {
+    if(flg){
+        canvas.onmousemove = (e)=> {
+            ctx.fillRect(e.clientX - 8, e.clientY - 8, 16, 16);           //控制矩形盒的x, y, width, height
+        }
+    }
+    flg = false;
 }
